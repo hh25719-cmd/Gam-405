@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SpiderEnemy : MonoBehaviour
 {
+
+    public PlayerController playerController;
     [SerializeField] private float attackCooldown;
     [SerializeField] private float range;
     [SerializeField] private float colliderDistance;
@@ -13,9 +15,12 @@ public class SpiderEnemy : MonoBehaviour
 
 
 
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        
     }
 
 
@@ -28,6 +33,8 @@ public class SpiderEnemy : MonoBehaviour
             {
                 cooldowntimer = 0;
                 rb.linearVelocity = Vector2.up * JumpPower;
+
+                
             }
         }
     }
@@ -46,5 +53,26 @@ public class SpiderEnemy : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(boxCollider.bounds.center + transform.up * range * transform.localScale.x * colliderDistance,
             new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z));
+    }
+
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Player" && playerController.isGrounded == false)
+        {
+            playerController.isSpiderDead = true;
+            playerController.rbPlayer.linearVelocity = Vector2.up * JumpPower;
+            playerController.blueSlime.enabled = false;
+            playerController.blueSpider.enabled = true;
+            Destroy(this.gameObject);
+            Debug.Log("HIT!!!!");
+
+
+           
+            
+
+            
+        }
     }
 }
