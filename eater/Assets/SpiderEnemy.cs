@@ -11,6 +11,14 @@ public class SpiderEnemy : MonoBehaviour
     public float JumpPower;
     private float cooldowntimer = Mathf.Infinity;
 
+
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+
     private void Update()
     {
         cooldowntimer += Time.deltaTime;
@@ -19,7 +27,7 @@ public class SpiderEnemy : MonoBehaviour
             if (cooldowntimer >= attackCooldown)
             {
                 cooldowntimer = 0;
-                rb.linearVelocity = Vector2.left * JumpPower;
+                rb.linearVelocity = Vector2.up * JumpPower;
             }
         }
     }
